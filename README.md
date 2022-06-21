@@ -6,24 +6,15 @@
 
 https://huonfraser.github.io/Mangoes/
 
-# My Blog
+# Mangoes Blog
+
+This repository contains the source code, inputs and outputs for a datascience project on the [Mangoes dataset](https://data.mendeley.com/datasets/46htwnp833/1). In the first half of the project we start with a linear regression model, we explore various ways of adding model complexity. The second part of the project will investigate various state-of-the-art deep networks.
+
+Currently progress is:
+* 1 - Introduction and exploratory data analysis. (draft)
+* 2 - Validation and evaluation. (draft)
+* 3 - Partial Least Squares and locally weighted models. (draft)
+* 4 - Domain related preprocessing. (draft)
+* 5 - Ensembles and comparisons to other work. (draft)
 
 
-_powered by [fastpages](https://github.com/fastai/fastpages)_
-
-
-## What To Do Next?
-
-Great!  You have setup your repo.  Now its time to start writing content.  Some helpful links:
-
-- [Writing Blogs With Jupyter](https://github.com/fastai/fastpages#writing-blog-posts-with-jupyter)
-
-- [Writing Blogs With Markdown](https://github.com/fastai/fastpages#writing-blog-posts-with-markdown)
-
-- [Writing Blog Posts With Word](https://github.com/fastai/fastpages#writing-blog-posts-with-microsoft-word)
-
-- [(Optional) Preview Your Blog Locally](_fastpages_docs/DEVELOPMENT.md)
-
-Note: you may want to remove example blog posts from the `_posts`,  `_notebooks` or `_word` folders (but leave them empty, don't delete these folders) if you don't want these blog posts to appear on your site.
-
-Please use the [nbdev & blogging channel](https://forums.fast.ai/c/fastai-users/nbdev/48) in the fastai forums for any questions or feature requests.
