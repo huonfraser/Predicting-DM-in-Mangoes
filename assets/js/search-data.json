@@ -1,11 +1,66 @@
 {
   
+    
+        "post0": {
+            "title": "Wrapping up Linear Models",
+            "content": "import pathlib import pandas as pd import numpy as np from matplotlib import pyplot as plt from tqdm.notebook import tqdm from codetiming import Timer from sklearn.model_selection import GroupKFold from mangoes_blog.scikit_models import * from skopt.space import Real, Integer from lwr import LocalWeightedRegression from sklearn.pipeline import Pipeline import warnings warnings.filterwarnings(&#39;ignore&#39;) . . mangoes=load_mangoes() train_data,test_data = train_test_split(mangoes) train_X, train_y, train_cat = X_y_cat(train_data,min_X=684,max_X=990) test_X, test_y, test_cat = X_y_cat(test_data,min_X=684,max_X=990) nrow,ncol=train_X.shape groups = train_cat[&#39;Pop&#39;] splitter=GroupKFold() . . Ensemble methods . We now compare our approach to off the shelf ensemble models that are typically the state of the art for tabular problems. We train off-the-shelf variants of Random forest, the default sklearn Gradient boosting regression and XGBoost. A caveat here is that each of these models could probably be optimised further. Intitial performance was dissapointing so we used PLS preprocessing for these experiemnts. . Random Forest . from sklearn.ensemble import RandomForestRegressor model = Pipeline([ (&#39;scaler&#39;, PLSRegression()), (&#39;model&#39;,RandomForestRegressor()) ]) space = [Integer(2,ncol,name=&#39;scaler__n_components&#39;), ] opt = Optimiser(space,model,train_X,train_y,splitter=splitter,groups=groups) model_forest,result_forest = opt.optimise(save_file=&#39;models/5_random_forest&#39;) . Best model had an MSE of 1.4784963212716935 Setting parameters as: {&#39;scaler__n_components&#39;: 11} Elapsed time: 5373.6494 seconds . Boosting . from sklearn.ensemble import GradientBoostingRegressor model = Pipeline([ (&#39;scaler&#39;, PLSRegression()), (&#39;model&#39;,GradientBoostingRegressor(random_state=0)) ]) space = [Integer(2,ncol,name=&#39;scaler__n_components&#39;), ] opt = Optimiser(space,model,train_X,train_y,splitter=splitter,groups=groups) model_boost,result_boost = opt.optimise(save_file=&#39;models/5_boost&#39;) . Best model had an MSE of 1.2087649202904645 Setting parameters as: {&#39;scaler__n_components&#39;: 28} Elapsed time: 2673.4774 seconds . XGBoost . import xgboost as xgb model = Pipeline([ (&#39;scaler&#39;, PLSRegression()), (&#39;model&#39;,xgb.XGBRegressor(tree_method=&quot;gpu_hist&quot;)) ]) space = [ Integer(2,ncol,name=&#39;scaler__n_components&#39;) ] opt = Optimiser(space,model,train_X,train_y,splitter=splitter,groups=groups) model_xg, result_xg = opt.optimise(save_file=&#39;models/5_xgboost&#39;) . Best model had an MSE of 1.2314341179508546 Setting parameters as: {&#39;scaler__n_components&#39;: 22} Elapsed time: 323.7012 seconds . Ensembles of PLS-LWR . We&#39;ve left them until last because typically emsembles will always give better performance; any of the models looked at in the previous 3 parts could be ensmbled. We take our previous best model (SG-PLS-LWR) and build a bagging regressor ensemble. This builds 10 copys of a model, with each trained on a sample (with replacement) of the dataset. Predictions are then made by taking the mean of the ensemble. . Results are no better than for the non-ensembled version. A possible explanation is that bagging reduces the density of the feature space, interfering with the locally weighted regressions. . from sklearn.ensemble import BaggingRegressor from joblib import dump, load pipe = load(&#39;models/4_pp-pls-lwr_model.joblib&#39;) model = BaggingRegressor(pipe) mse = cross_validate(model,train_X,train_y,splitter=splitter,groups=groups,plot=True) print(f&#39;Train set MSE: {mse}&#39;) . Train set MSE: 0.7236336462319299 . model, mse_test = evaluate(model,train_X,train_y,test_X,test_y,plot=True) . Test set MSE: 0.7801 . Comparing Techniques . So in this series, starting with a linear regression (LR), we have added complexity; feature extraction with partial least squares (PLS), lazy instance weights with locally weighted regressions (LWR) and preprocessing with Savitsky Golay (SG). Adding ach of these components incrementally improved performance during cross-validation, although the hyperparameter settings were not always consistent. The final model in this series (SG-PLS-LWR) gave a cross-validation MSE of 0.7223 and a test MSE of 0.7686. . When we compared this model to off-the-shelf ensembles (including XGBoost) and a bagging-ensemble extension, we found that these underperformed our model. To round out this part of the series we compare our results to those achieved by Anderson et al. We look at two of their models, LPLS, their best performing locally weighted PLS model, and Ensemble, their best ensemble based model. Our approach gave substantially better results on both models. Without going into too much detail, this is likely due to the Anderson et al. models fixing the number of components for PLS to a relatively low number, whereas we kept this hyperparmater flexible. . Model CV Score Test Score . LR | 0.8157 | 1.1147 | . PLS-LR | 0.8116 | - | . LWR | 0.7868 | - | . PLS-LWR | 0.7520 | 0.8113 | . SG-PLS-LWR | 0.7223 | 0.7686 | . E(SG-PLS-LWR) | 0.7236 | 0.7801 | . Anderson et al. LPLS | 0.66 | 0.887 | . Anderson et al. Ensemble | 0.56 | 0.850 | .",
+            "url": "https://huonfraser.github.io/Mangoes/mangoes/2022/06/17/Benchmarks.html",
+            "relUrl": "/mangoes/2022/06/17/Benchmarks.html",
+            "date": " • Jun 17, 2022"
+        }
+        
+    
+  
+    
+        ,"post1": {
+            "title": "Preprocessing",
+            "content": "",
+            "url": "https://huonfraser.github.io/Mangoes/2022/06/13/Preprocessing.html",
+            "relUrl": "/2022/06/13/Preprocessing.html",
+            "date": " • Jun 13, 2022"
+        }
+        
+    
+  
+    
+        ,"post2": {
+            "title": "Pls",
+            "content": "",
+            "url": "https://huonfraser.github.io/Mangoes/2022/06/07/PLS.html",
+            "relUrl": "/2022/06/07/PLS.html",
+            "date": " • Jun 7, 2022"
+        }
+        
+    
+  
+    
+        ,"post3": {
+            "title": "Evaluation",
+            "content": "",
+            "url": "https://huonfraser.github.io/Mangoes/2022/06/03/Evaluation.html",
+            "relUrl": "/2022/06/03/Evaluation.html",
+            "date": " • Jun 3, 2022"
+        }
+        
+    
+  
+    
+        ,"post4": {
+            "title": "Introduction",
+            "content": "",
+            "url": "https://huonfraser.github.io/Mangoes/2022/06/01/Introduction.html",
+            "relUrl": "/2022/06/01/Introduction.html",
+            "date": " • Jun 1, 2022"
+        }
+        
+    
+  
 
   
   
 
   
-      "page1": {
+      ,"page1": {
           "title": "About Me",
           "content": "This website is powered by fastpages 1. . a blogging platform that natively supports Jupyter notebooks in addition to other formats. &#8617; . |",
           "url": "https://huonfraser.github.io/Mangoes/about/",
