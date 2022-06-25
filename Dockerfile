@@ -1,5 +1,10 @@
 FROM jupyter/scipy-notebook
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+
+COPY requirements.txt ./
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+COPY . .
 
 CMD echo "Running Docker Image"
