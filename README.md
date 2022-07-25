@@ -11,10 +11,12 @@ https://huonfraser.github.io/Mangoes/
 This repository contains the source code, inputs and outputs for a datascience project on the [Mangoes dataset](https://data.mendeley.com/datasets/46htwnp833/1). In the first half of the project we start with a linear regression model, we explore various ways of adding model complexity. The second part of the project will investigate various state-of-the-art deep networks.
 
 Currently progress is:
-* 1 - Introduction and exploratory data analysis. (draft)
-* 2 - Validation and evaluation. (draft)
-* 3 - Partial Least Squares and locally weighted models. (draft)
-* 4 - Domain related preprocessing. (draft)
-* 5 - Ensembles and comparisons to other work. (draft)
+* 1 - Introduction and exploratory data analysis.
+* 2 - Validation and evaluation.
+* 3 - Partial Least Squares and locally weighted models. 
+* 4 - Domain related preprocessing.
+* 5 - Ensembles and comparisons to other work. 
+* 6 - Introducing PyTorch-Tabular
+* 7 - Cross-Validation with PyTorch-Tabular (in progress).
 
 
