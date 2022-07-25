@@ -98,7 +98,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      5 min read
+      6 min read
     
 </span></p>
 
@@ -153,6 +153,11 @@ window.onload = wrap_img;
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/notebooks/Mangoes/src/'</span><span class="p">)</span>
+<span class="n">model_path</span>  <span class="o">=</span> <span class="s1">'../models/'</span>
+
 
 <span class="kn">from</span> <span class="nn">codetiming</span> <span class="kn">import</span> <span class="n">Timer</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GroupKFold</span>
@@ -347,7 +352,7 @@ window.onload = wrap_img;
 <span class="n">space</span>  <span class="o">=</span> <span class="p">[</span><span class="n">Real</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'model__alpha'</span><span class="p">,</span><span class="n">prior</span><span class="o">=</span><span class="s1">'log-uniform'</span><span class="p">)]</span>
 
 <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimiser</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="n">pls</span><span class="p">,</span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span><span class="p">,</span><span class="n">splitter</span><span class="o">=</span><span class="n">splitter</span><span class="p">,</span><span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-<span class="n">model_snv</span><span class="p">,</span><span class="n">result_snv</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="s1">'models/4_snv'</span><span class="p">)</span>
+<span class="n">model_snv</span><span class="p">,</span><span class="n">result_snv</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="n">model_path</span><span class="o">+</span><span class="s1">'4_snv'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -485,7 +490,7 @@ Elapsed time: 26.4898 seconds
 <span class="n">space</span>  <span class="o">=</span> <span class="p">[</span><span class="n">Real</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'model__alpha'</span><span class="p">,</span><span class="n">prior</span><span class="o">=</span><span class="s1">'log-uniform'</span><span class="p">)]</span>
 
 <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimiser</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="n">pls</span><span class="p">,</span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span><span class="p">,</span><span class="n">splitter</span><span class="o">=</span><span class="n">splitter</span><span class="p">,</span><span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-<span class="n">model_msc</span><span class="p">,</span><span class="n">result_msc</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="s1">'models/4_msc'</span><span class="p">)</span>
+<span class="n">model_msc</span><span class="p">,</span><span class="n">result_msc</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="n">model_path</span><span class="o">+</span><span class="s1">'4_msc'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -707,7 +712,7 @@ Elapsed time: 257.0109 seconds
     
 
 <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimiser</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="n">pls</span><span class="p">,</span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span><span class="p">,</span><span class="n">splitter</span><span class="o">=</span><span class="n">splitter</span><span class="p">,</span><span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-<span class="n">model_savgol</span><span class="p">,</span><span class="n">result_savgol</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="s1">'models/4_savgot'</span><span class="p">)</span>
+<span class="n">model_savgol</span><span class="p">,</span><span class="n">result_savgol</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="n">model_path</span><span class="o">+</span><span class="s1">'4_savgot'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -802,7 +807,7 @@ Elapsed time: 31.4681 seconds
          <span class="p">]</span>
 
 <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimiser</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="n">pipe</span><span class="p">,</span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span><span class="p">,</span><span class="n">splitter</span><span class="o">=</span><span class="n">splitter</span><span class="p">,</span><span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-<span class="n">model_1</span><span class="p">,</span><span class="n">result_1</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="s1">'models/4_pp-pls-lwr1'</span><span class="p">)</span>
+<span class="n">model_1</span><span class="p">,</span><span class="n">result_1</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="n">model_path</span><span class="o">+</span><span class="s1">'4_pp-pls-lwr1'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -868,7 +873,7 @@ Elapsed time: 6335.7100 seconds
          <span class="p">]</span>
 
 <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimiser</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="n">pipe</span><span class="p">,</span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span><span class="p">,</span><span class="n">splitter</span><span class="o">=</span><span class="n">splitter</span><span class="p">,</span><span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-<span class="n">model_2</span><span class="p">,</span><span class="n">result_2</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="s1">'models/4_pp-pls-lwr2'</span><span class="p">)</span>
+<span class="n">model_2</span><span class="p">,</span><span class="n">result_2</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="n">model_path</span><span class="o">+</span><span class="s1">'4_pp-pls-lwr2'</span><span class="p">)</span>
 </pre></div>
 
     </div>

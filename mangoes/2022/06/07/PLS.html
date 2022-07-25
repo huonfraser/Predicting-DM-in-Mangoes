@@ -153,9 +153,14 @@ window.onload = wrap_img;
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'/notebooks/Mangoes/src/'</span><span class="p">)</span>
+<span class="n">model_path</span>  <span class="o">=</span> <span class="s1">'../models/'</span>
+
+
 <span class="kn">from</span> <span class="nn">codetiming</span> <span class="kn">import</span> <span class="n">Timer</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GroupKFold</span>
-<span class="kn">from</span> <span class="nn">mangoes_blog.scikit_models</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">mangoes_blog.scikit_import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">skopt.space</span> <span class="kn">import</span> <span class="n">Real</span><span class="p">,</span> <span class="n">Integer</span>
 <span class="kn">from</span> <span class="nn">lwr</span> <span class="kn">import</span> <span class="n">LocalWeightedRegression</span>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
@@ -261,7 +266,7 @@ window.onload = wrap_img;
          <span class="p">]</span>
 
 <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimiser</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="n">pls</span><span class="p">,</span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span><span class="p">,</span><span class="n">splitter</span><span class="o">=</span><span class="n">splitter</span><span class="p">,</span><span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-<span class="n">model_pls</span><span class="p">,</span><span class="n">result_pls</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="s1">'models/3_pls'</span><span class="p">)</span>
+<span class="n">model_pls</span><span class="p">,</span><span class="n">result_pls</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="n">model_path</span><span class="o">+</span><span class="s1">'3_pls'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -338,7 +343,7 @@ Elapsed time: 277.2199 seconds
          <span class="p">]</span>
 
 <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimiser</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="n">lwr</span><span class="p">,</span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span><span class="p">,</span><span class="n">splitter</span><span class="o">=</span><span class="n">splitter</span><span class="p">,</span><span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-<span class="n">model_lwr</span><span class="p">,</span><span class="n">result_lwr</span><span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="s1">'models/3_lwr'</span><span class="p">)</span>
+<span class="n">model_lwr</span><span class="p">,</span><span class="n">result_lwr</span><span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="n">model_path</span><span class="o">+</span><span class="s1">'3_lwr'</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -411,7 +416,7 @@ Elapsed time: 12268.5101 seconds
           <span class="n">Real</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'model__alpha'</span><span class="p">,</span><span class="n">prior</span><span class="o">=</span><span class="s1">'log-uniform'</span><span class="p">)</span>
          <span class="p">]</span>
 <span class="n">opt</span> <span class="o">=</span> <span class="n">Optimiser</span><span class="p">(</span><span class="n">space</span><span class="p">,</span><span class="n">plslwr</span><span class="p">,</span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span><span class="p">,</span><span class="n">splitter</span><span class="o">=</span><span class="n">splitter</span><span class="p">,</span><span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-<span class="n">model_plslwr</span><span class="p">,</span><span class="n">result_plslwr</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="s1">'models/3_plslwr'</span><span class="p">)</span>
+<span class="n">model_plslwr</span><span class="p">,</span><span class="n">result_plslwr</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">optimise</span><span class="p">(</span><span class="n">save_file</span><span class="o">=</span><span class="n">model_path</span><span class="o">+</span><span class="s1">'3_plslwr'</span><span class="p">)</span>
 </pre></div>
 
     </div>
