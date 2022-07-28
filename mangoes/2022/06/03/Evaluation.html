@@ -98,7 +98,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      11 min read
+      8 min read
     
 </span></p>
 
@@ -136,8 +136,8 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In the previous notebook, we introduced the Mangoes data set, performed explanatory analysis for the metadata, and built a linear model. In this notebook we define our evaluation approach for future experiments. We want to avoid contuinously evaluating on test set as then we may be selecting for models that fit this set well due to chance alone. On the other hand, we need to validate the performance of our models at least occasionally. The middleground approach we will take is to select a single model from each notebook to be evaluated on the test set, with this selected by cross-validation on the training data.</p>
-<p>The other element of our evaluation approach is search, we need a method to select hyperparameters. As a starting point we use 50 evaluations for each search. As our models get more complex we may increase this budget, or switch to budgetting based on time.</p>
+<p>In the previous notebook, we introduced the Mangoes data set, performed explanatory analysis for the metadata, and built a linear model. In this notebook, we define our evaluation approach for future experiments. We want to avoid continuously evaluating the test set as then we may be selecting models that fit this set well due to chance alone. On the other hand, we need to validate the performance of our models at least occasionally. The middle-ground approach we will take is to select a single model from each notebook to be evaluated on the test set, with this selected by cross-validation on the training data.</p>
+<p>The other element of our evaluation approach is search, we need a method to select hyperparameters. As a starting point, we use 50 evaluations for each search. As our models get more complex we may increase this budget, or switch to budgeting based on time.</p>
 
 </div>
 </div>
@@ -211,9 +211,9 @@ window.onload = wrap_img;
 <h2 id="Cross-Validation">
 <a class="anchor" href="#Cross-Validation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cross-Validation<a class="anchor-link" href="#Cross-Validation"> </a>
 </h2>
-<p>A ommon cross-validation method for IR-spectra analysis is leave-one-out (in this case fruit), with leave-out-one-population used in applications on Mangoes. However there are concerns that this leads to overfitting, as its likely than for any one particular fruit/pop there is another very similar fruit/pop (As an aside we could measure this by using $kNN_{k=1}$ models, then measuring the deviation between leave-one-out cross-validation scores and train-test scores). Rather we go with the standard 5-fold cross-validation which is a good middle gorund of asking if we can repeat a good level of performance 5 times with decent sized test/validate populations.</p>
-<p>The sklearn cross-validate functions (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html#sklearn.model_selection.cross_validate">cross_validate</a>, <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score">cross_val_score</a>), take averages of scores. This is very practial, as it allows them to nest an evaluation function, however returning functions of scores is not ideal. A better method is to combine the test predictions of each fold into a single set and score based of these. For mean squared error (MSE) this doesn't make a difference, but for an $R^2$ score, performance may be completely different. It also allows us to plot our results. A requirement for this to work is that each instance in a training set is used for testing only once (s.t. there is one unique prediction for each instance).</p>
-<p>Below we define our cross-validation function and an accompanying function to evaluate a model on the test data.</p>
+<p>A common cross-validation method for IR-spectra analysis is leave-one-out (in this case fruit), with leave-out-one-population used in applications on Mangoes. However there are concerns that this leads to overfitting, as its likely than for any one particular fruit/pop there is another very similar fruit/pop (As an aside we could measure this by using $kNN_{k=1}$ models, then measuring the deviation between leave-one-out cross-validation scores and train-test scores). Rather we go with the standard 5-fold cross-validation which is a good middle gorund of asking if we can repeat a good level of performance 5 times with decent sized test/validate populations.</p>
+<p>The sklearn cross-validate functions (<a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html#sklearn.model_selection.cross_validate">cross_validate</a>, <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score">cross_val_score</a>), take averages of scores.  This is very practical, as it allows them to iterate over an evaluation function with little overhead, however returning functions of scores is not ideal. A better method is to combine the test predictions of each fold into a single set and score based on these. For mean squared error (MSE) this doesn't make a difference, but for an $R^2$ score, performance may be completely different. It also allows us to plot our results. A requirement for this to work is that each instance in a training set is used for testing only once (s.t. there is one unique prediction for each instance).
+Below we define our cross-validation function and an accompanying function to evaluate a model on the test data.</p>
 
 </div>
 </div>
@@ -307,8 +307,8 @@ window.onload = wrap_img;
 <h3 id="Grouping-instance">
 <a class="anchor" href="#Grouping-instance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Grouping instance<a class="anchor-link" href="#Grouping-instance"> </a>
 </h3>
-<p>We use grouped KFold, with grouping done by Pop. As an exercise we show the effect of grouping by comparing to groups by FruitID and no grouping. Mixing populations between folds (grouping by fruit or no grouping) significantly improves validation performance. As the test set includes different populations, this won't effect the results of the final model, however it may effect our decision of model to select. From here onwards we use grouping by Pop.</p>
-<p>Our specific problem is to build a model based of the given populations that can extrapolate to unseen populations, so validating wtih groups based of Pop will give a better indication of the true performance than other methods.</p>
+<p>We use grouped KFold, with grouping done by Pop. As an exercise, we show the effect of grouping by comparing groups by FruitID and no grouping. Mixing populations between folds (grouping by fruit or no grouping) significantly improves validation performance. As the test set includes different populations, this won't affect the results of the final model, however, it may affect our decision of model to select. From here onwards we use grouping by Pop.</p>
+<p>Our specific problem is to build a model based on the given populations that can extrapolate to unseen populations, so validating with groups based on Pop will give a better indication of the true performance than other methods.</p>
 
 </div>
 </div>
@@ -350,7 +350,7 @@ window.onload = wrap_img;
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Grouped by Pop, MSE =  0.8236810194689146
 Grouped by Fruit, MSE =  0.6800524561711946
-No Grouping, MSE =  0.6748251329051893
+No Grouping, MSE =  0.6723791264681583
 </pre>
 </div>
 </div>
@@ -373,9 +373,9 @@ No Grouping, MSE =  0.6748251329051893
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Our task for search is to define a search procudure. Since we've defined a custom cross-valdiation method, the sklearn  grid_search_cv and random_search cv won't work.  Luckily the <a href="https://scikit-optimize.github.io/">scikit-optimize</a> (skopt) package provides a more powerful interface for Bayesian optimisation that we can take advantage of.</p>
-<p>We create an interface for the the skopt package, by first defining objective function, which takes a search space and returns a  score based on cross-validation results. Any extra parameters for cross validation are defined in initialisation. We then define an optimise function, which wraps our search with nice things like tqdm progress bars and optional outputs This function returns a copy of the model with parameters set to found solution and a dictionary of the search results. All the heavy lifting here is done by the gp_minimize function, which runs Bayesian optimsiation based around a Gaussian process regression kernel. In the future we could extend this to use different kernels.</p>
-<p>To create our grid-search and random-search methods, we cheat a little and use the initialisation methods from skopt. Random is just that, while grid search will devide the parameter space evenly to match the number of calls. This approach allows us to run Bayesian, random, and grid search using the same definitions of inputs and recieving the same outputs.</p>
+<p>Our task for search is to define a search procedure. Since we've defined a custom cross-validation method, the sklearn  grid_search_cv and random_search cv won't work.  Luckily the <a href="https://scikit-optimize.github.io/">scikit-optimize</a> (skopt) package provides a more powerful interface for Bayesian optimisation that we can take advantage of.</p>
+<p>We create an interface for the skopt package, by first defining an objective function, which takes a search space and returns a  score based on cross-validation results. Any extra parameters for cross-validation are defined in initialisation. We then define an optimise function, which wraps our search with nice things like tqdm progress bars and optional outputs This function returns a copy of the model with parameters set to find a solution and a dictionary of the search results. All the heavy lifting here is done by the gp_minimize function, which runs Bayesian optimisation based around a Gaussian process regression kernel. In the future, we could extend this to use different kernels.</p>
+<p>To create our grid-search and random-search methods, we cheat a little and use the initialisation methods from skopt. Random is just that, while grid search will divide the parameter space evenly to match the number of calls. This approach allows us to run Bayesian, random, and grid search using the same definitions of inputs and receiving the same outputs.</p>
 
 </div>
 </div>
@@ -488,7 +488,7 @@ No Grouping, MSE =  0.6748251329051893
 <a class="anchor" href="#Search-for-L2-Regularisation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Search for L2 Regularisation<a class="anchor-link" href="#Search-for-L2-Regularisation"> </a>
 </h2>
 <p>We run each search variant below for the problem of finding an appropriate level of $l_2$ regularisation to add to a linear regression alongside a standardisation scheme.</p>
-<p>To run our search we first define a model, which should be an sklearn type regression model. We then define our search space, with each dimension defined using one of skopt's provided classes (Integer, Float, Categorical). For each dimension we define the the range of values. For categorical variables this is an explicit, list, while for real values (floats and integers) we defined the start and end range. We can also define log$_{10}$ sampling for numerical values.</p>
+<p>To run our search we first define a model, which should be an sklearn type regression model. We then define our search space, with each dimension defined using one of skopt's provided classes (Integer, Float, Categorical). For each dimension, we define the range of values. For categorical variables, this is an explicit, list, while for real values (floats and integers) we defined the start and end range. We can also define log$_{10}$ sampling for numerical values.</p>
 
 </div>
 </div>
@@ -553,23 +553,9 @@ No Grouping, MSE =  0.6748251329051893
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Running Grid Search
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 50/50 [00:09&lt;00:00,  2.79it/s]</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Best model had an MSE of 0.8157
+Best model had an MSE of 0.8157
 Setting parameters as: {'scaler__with_mean': 1, 'scaler__with_std': 1, 'model__alpha': 0.005623413251903491}
-Elapsed time: 11.0227 seconds
+Elapsed time: 18.7806 seconds
 </pre>
 </div>
 </div>
@@ -622,74 +608,9 @@ Elapsed time: 11.0227 seconds
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Running Random Search
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>
-  0%|          | 0/50 [00:00&lt;?, ?it/s]
-  2%|▏         | 1/50 [00:00&lt;00:08,  5.92it/s]
-  4%|▍         | 2/50 [00:00&lt;00:09,  5.17it/s]
-  6%|▌         | 3/50 [00:00&lt;00:07,  6.07it/s]
-  8%|▊         | 4/50 [00:00&lt;00:07,  5.86it/s]
- 10%|█         | 5/50 [00:00&lt;00:07,  5.69it/s]
- 12%|█▏        | 6/50 [00:01&lt;00:07,  6.05it/s]
- 14%|█▍        | 7/50 [00:01&lt;00:07,  5.73it/s]
- 16%|█▌        | 8/50 [00:01&lt;00:07,  5.49it/s]
- 18%|█▊        | 9/50 [00:01&lt;00:07,  5.39it/s]
- 20%|██        | 10/50 [00:01&lt;00:07,  5.53it/s]
- 22%|██▏       | 11/50 [00:01&lt;00:07,  5.44it/s]
- 24%|██▍       | 12/50 [00:02&lt;00:06,  5.85it/s]
- 26%|██▌       | 13/50 [00:02&lt;00:06,  5.96it/s]
- 28%|██▊       | 14/50 [00:02&lt;00:06,  5.67it/s]
- 30%|███       | 15/50 [00:02&lt;00:05,  5.88it/s]
- 32%|███▏      | 16/50 [00:02&lt;00:05,  5.94it/s]
- 34%|███▍      | 17/50 [00:02&lt;00:05,  6.18it/s]
- 36%|███▌      | 18/50 [00:03&lt;00:05,  5.44it/s]
- 38%|███▊      | 19/50 [00:03&lt;00:05,  5.36it/s]
- 40%|████      | 20/50 [00:03&lt;00:05,  5.87it/s]
- 42%|████▏     | 21/50 [00:03&lt;00:05,  5.79it/s]
- 44%|████▍     | 22/50 [00:03&lt;00:05,  5.55it/s]
- 46%|████▌     | 23/50 [00:04&lt;00:04,  5.79it/s]
- 48%|████▊     | 24/50 [00:04&lt;00:04,  5.62it/s]
- 50%|█████     | 25/50 [00:04&lt;00:04,  5.74it/s]
- 52%|█████▏    | 26/50 [00:04&lt;00:04,  5.68it/s]
- 54%|█████▍    | 27/50 [00:04&lt;00:03,  5.90it/s]
- 56%|█████▌    | 28/50 [00:04&lt;00:03,  5.92it/s]
- 58%|█████▊    | 29/50 [00:05&lt;00:03,  5.74it/s]
- 60%|██████    | 30/50 [00:05&lt;00:03,  6.10it/s]
- 62%|██████▏   | 31/50 [00:05&lt;00:03,  5.86it/s]
- 64%|██████▍   | 32/50 [00:05&lt;00:03,  5.92it/s]
- 66%|██████▌   | 33/50 [00:05&lt;00:02,  6.25it/s]
- 68%|██████▊   | 34/50 [00:05&lt;00:02,  6.00it/s]
- 70%|███████   | 35/50 [00:06&lt;00:02,  6.45it/s]
- 72%|███████▏  | 36/50 [00:06&lt;00:02,  6.13it/s]
- 74%|███████▍  | 37/50 [00:06&lt;00:02,  5.74it/s]
- 76%|███████▌  | 38/50 [00:06&lt;00:01,  6.13it/s]
- 78%|███████▊  | 39/50 [00:06&lt;00:01,  5.88it/s]
- 80%|████████  | 40/50 [00:06&lt;00:01,  5.78it/s]
- 82%|████████▏ | 41/50 [00:07&lt;00:01,  5.69it/s]
- 84%|████████▍ | 42/50 [00:07&lt;00:01,  5.57it/s]
- 86%|████████▌ | 43/50 [00:07&lt;00:01,  5.80it/s]
- 88%|████████▊ | 44/50 [00:07&lt;00:01,  5.73it/s]
- 90%|█████████ | 45/50 [00:07&lt;00:00,  5.83it/s]
- 92%|█████████▏| 46/50 [00:07&lt;00:00,  6.14it/s]
- 94%|█████████▍| 47/50 [00:08&lt;00:00,  6.18it/s]
- 96%|█████████▌| 48/50 [00:08&lt;00:00,  6.13it/s]
- 98%|█████████▊| 49/50 [00:08&lt;00:00,  6.08it/s]
-100%|██████████| 50/50 [00:09&lt;00:00,  3.05it/s]</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Best model had an MSE of 0.8180
+Best model had an MSE of 0.8180
 Setting parameters as: {'scaler__with_mean': 0, 'scaler__with_std': 1, 'model__alpha': 0.019920586766671106}
-Elapsed time: 10.6795 seconds
+Elapsed time: 11.4246 seconds
 </pre>
 </div>
 </div>
@@ -742,125 +663,9 @@ Elapsed time: 10.6795 seconds
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Running Bayesian Search
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>
-
-  0%|          | 0/50 [00:00&lt;?, ?it/s]
-
-  2%|▏         | 1/50 [00:00&lt;00:08,  6.11it/s]
-
-  4%|▍         | 2/50 [00:00&lt;00:08,  5.80it/s]
-
-  6%|▌         | 3/50 [00:00&lt;00:07,  6.41it/s]
-
-  8%|▊         | 4/50 [00:00&lt;00:07,  5.81it/s]
-
- 10%|█         | 5/50 [00:00&lt;00:08,  5.47it/s]
-
- 12%|█▏        | 6/50 [00:01&lt;00:08,  5.34it/s]
-
- 14%|█▍        | 7/50 [00:01&lt;00:08,  5.29it/s]
-
- 16%|█▌        | 8/50 [00:01&lt;00:08,  5.06it/s]
-
- 18%|█▊        | 9/50 [00:01&lt;00:07,  5.17it/s]
-
- 20%|██        | 10/50 [00:02&lt;00:11,  3.40it/s]
-
- 22%|██▏       | 11/50 [00:02&lt;00:13,  2.88it/s]
-
- 24%|██▍       | 12/50 [00:03&lt;00:14,  2.56it/s]
-
- 26%|██▌       | 13/50 [00:03&lt;00:15,  2.45it/s]
-
- 28%|██▊       | 14/50 [00:04&lt;00:15,  2.37it/s]
-
- 30%|███       | 15/50 [00:04&lt;00:15,  2.32it/s]
-
- 32%|███▏      | 16/50 [00:04&lt;00:15,  2.26it/s]
-
- 34%|███▍      | 17/50 [00:05&lt;00:14,  2.21it/s]
-
- 36%|███▌      | 18/50 [00:05&lt;00:14,  2.22it/s]
-
- 38%|███▊      | 19/50 [00:06&lt;00:15,  2.03it/s]
-
- 40%|████      | 20/50 [00:06&lt;00:14,  2.03it/s]
-
- 42%|████▏     | 21/50 [00:07&lt;00:15,  1.91it/s]
-
- 44%|████▍     | 22/50 [00:08&lt;00:14,  1.96it/s]
-
- 46%|████▌     | 23/50 [00:08&lt;00:13,  1.97it/s]
-
- 48%|████▊     | 24/50 [00:09&lt;00:13,  1.93it/s]
-
- 50%|█████     | 25/50 [00:09&lt;00:13,  1.83it/s]
-
- 52%|█████▏    | 26/50 [00:10&lt;00:12,  1.89it/s]
-
- 54%|█████▍    | 27/50 [00:10&lt;00:11,  1.93it/s]
-
- 56%|█████▌    | 28/50 [00:11&lt;00:11,  1.88it/s]
-
- 58%|█████▊    | 29/50 [00:11&lt;00:12,  1.75it/s]
-
- 60%|██████    | 30/50 [00:12&lt;00:12,  1.64it/s]
-
- 62%|██████▏   | 31/50 [00:13&lt;00:12,  1.56it/s]
-
- 64%|██████▍   | 32/50 [00:14&lt;00:11,  1.51it/s]
-
- 66%|██████▌   | 33/50 [00:14&lt;00:11,  1.47it/s]
-
- 68%|██████▊   | 34/50 [00:15&lt;00:11,  1.40it/s]
-
- 70%|███████   | 35/50 [00:16&lt;00:10,  1.44it/s]
-
- 72%|███████▏  | 36/50 [00:16&lt;00:09,  1.52it/s]
-
- 74%|███████▍  | 37/50 [00:17&lt;00:09,  1.41it/s]
-
- 76%|███████▌  | 38/50 [00:18&lt;00:08,  1.48it/s]
-
- 78%|███████▊  | 39/50 [00:18&lt;00:07,  1.50it/s]
-
- 80%|████████  | 40/50 [00:19&lt;00:07,  1.42it/s]
-
- 82%|████████▏ | 41/50 [00:20&lt;00:06,  1.48it/s]
-
- 84%|████████▍ | 42/50 [00:20&lt;00:05,  1.49it/s]
-
- 86%|████████▌ | 43/50 [00:21&lt;00:04,  1.50it/s]
-
- 88%|████████▊ | 44/50 [00:22&lt;00:04,  1.41it/s]
-
- 90%|█████████ | 45/50 [00:23&lt;00:03,  1.41it/s]
-
- 92%|█████████▏| 46/50 [00:23&lt;00:02,  1.41it/s]
-
- 94%|█████████▍| 47/50 [00:24&lt;00:02,  1.37it/s]
-
- 96%|█████████▌| 48/50 [00:25&lt;00:01,  1.40it/s]
-
- 98%|█████████▊| 49/50 [00:25&lt;00:00,  1.44it/s]
-
-100%|██████████| 50/50 [00:26&lt;00:00,  1.41it/s]</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Best model had an MSE of 0.8157
+Best model had an MSE of 0.8157
 Setting parameters as: {'scaler__with_mean': 1, 'scaler__with_std': 1, 'model__alpha': 0.006159146375736338}
-Elapsed time: 28.0659 seconds
+Elapsed time: 31.7134 seconds
 </pre>
 </div>
 </div>
@@ -894,7 +699,7 @@ Elapsed time: 28.0659 seconds
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Results across search were indifferent to mean centring, but scaled variance and added a small amount of $l_2$ regularisation. Bayesian and random search converge much quicker than grid search, with Bayesian search returning the best result by a small margin.</p>
+<p>Results across the search were indifferent to mean centring, but scaled variance and added a small amount of $l_2$ regularisation. Bayesian and random search converge much quicker than grid search, with Bayesian search returning the best result by a small margin.</p>
 
 </div>
 </div>
@@ -905,7 +710,7 @@ Elapsed time: 28.0659 seconds
 <h2 id="Summary">
 <a class="anchor" href="#Summary" aria-hidden="true"><span class="octicon octicon-link"></span></a>Summary<a class="anchor-link" href="#Summary"> </a>
 </h2>
-<p>This notebook has introduced our cross validation and search schemes. We used these search schemes to find an optimal $l_2$ regularisation and standardisation scheme.
+<p>This notebook has introduced our cross-validation and search schemes. We used these search schemes to find an optimal $l_2$ regularisation and standardisation scheme.
 The selected model gave a training MSE of 0.8156. On the test set (shown below) this model scores an MSE of 1.091, a slight improvement upon the 1.1290 (-0.0380) scored by the base linear regression from the last notebook.</p>
 
 </div>

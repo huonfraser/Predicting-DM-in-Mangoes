@@ -9,9 +9,24 @@ import pathlib
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
-from sklearn.pipeline import Pipeline
 
-np.random.seed(123)
+from tqdm.notebook import tqdm
+from codetiming import Timer
+
+from sklearn.base import TransformerMixin, BaseEstimator
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.model_selection import GroupKFold, KFold
+from sklearn.cross_decomposition import PLSRegression as PLS_
+from sklearn.preprocessing import scale
+
+from skopt import gp_minimize,dump
+from skopt.space import Real, Integer
+from skopt.plots import plot_convergence
+from skopt.utils import use_named_args
+from skopt.callbacks import VerboseCallback
+
+from scipy.signal import savgol_filter
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -43,8 +58,7 @@ def X_y_cat(data,min_X=285,max_X=1200):
     return data[X_vars], data[y_vars], data[cat_vars]
 
 # Cell
-from sklearn.preprocessing import scale
-from sklearn.base import TransformerMixin, BaseEstimator
+
 class SNV(TransformerMixin, BaseEstimator):
 
     def fit(self, X, y=None, sample_weight=None):
@@ -72,7 +86,7 @@ class MSC(TransformerMixin, BaseEstimator):
         return X_msc
 
 # Cell
-from scipy.signal import savgol_filter
+
 
 class SavGol(TransformerMixin, BaseEstimator):
 
@@ -90,8 +104,7 @@ class SavGol(TransformerMixin, BaseEstimator):
 
 # Cell
 
-from sklearn.metrics import r2_score, mean_squared_error
-from sklearn.model_selection import GroupKFold, KFold
+
 
 def cross_validate(model,X,y,splitter=GroupKFold(),groups=None,plot=False,save_loc=None):
     preds = None
@@ -159,14 +172,7 @@ def evaluate(model,train_X,train_y,test_X,test_y,plot=False,save_loc=None,log=Tr
 
 
 # Cell
-from tqdm.notebook import tqdm
-from codetiming import Timer
 
-from skopt import gp_minimize,dump
-from skopt.space import Real, Integer
-from skopt.plots import plot_convergence
-from skopt.utils import use_named_args
-from skopt.callbacks import VerboseCallback
 
 class TqdmCallback(tqdm):
 
@@ -248,7 +254,7 @@ class Optimiser():
 
 
 # Cell
-from sklearn.cross_decomposition import PLSRegression as PLS_
+
 
 class PLSRegression(PLS_):
 
@@ -258,16 +264,6 @@ class PLSRegression(PLS_):
 
 # Cell
 #export
-import pathlib
-import pandas as pd
-import numpy as np
-from matplotlib import pyplot as plt
-from sklearn.pipeline import Pipeline
-
-np.random.seed(123)
-
-import warnings
-warnings.filterwarnings('ignore')
 
 # Cell
 def load_mangoes():
@@ -297,8 +293,7 @@ def X_y_cat(data,min_X=285,max_X=1200):
 
 # Cell
 
-from sklearn.metrics import r2_score, mean_squared_error
-from sklearn.model_selection import GroupKFold, KFold
+
 
 def cross_validate(model,X,y,splitter=GroupKFold(),groups=None,plot=False,save_loc=None):
     preds = None
@@ -366,15 +361,6 @@ def evaluate(model,train_X,train_y,test_X,test_y,plot=False,save_loc=None,log=Tr
 
 
 # Cell
-from tqdm import tqdm
-from codetiming import Timer
-
-from skopt import gp_minimize,dump
-from skopt.space import Real, Integer
-from skopt.plots import plot_convergence
-from skopt.utils import use_named_args
-from skopt.callbacks import VerboseCallback
-
 class TqdmCallback(tqdm):
 
     def __call__(self, res):
@@ -455,7 +441,7 @@ class Optimiser():
 
 
 # Cell
-from sklearn.cross_decomposition import PLSRegression as PLS_
+
 
 class PLSRegression(PLS_):
 
@@ -464,8 +450,7 @@ class PLSRegression(PLS_):
         return X
 
 # Cell
-from sklearn.preprocessing import scale
-from sklearn.base import TransformerMixin, BaseEstimator
+
 class SNV(TransformerMixin, BaseEstimator):
 
     def fit(self, X, y=None, sample_weight=None):
@@ -493,7 +478,6 @@ class MSC(TransformerMixin, BaseEstimator):
         return X_msc
 
 # Cell
-from scipy.signal import savgol_filter
 
 class SavGol(TransformerMixin, BaseEstimator):
 
