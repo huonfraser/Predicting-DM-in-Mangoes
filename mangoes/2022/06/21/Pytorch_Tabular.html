@@ -197,8 +197,8 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Pytorch, the neural-network platform of choice for this project requires users to define their own training and validation loops. While this provides excellent flexability, higher-level API's like <a href="https://www.pytorchlightning.ai/">pytorch-lighting</a> and <a href="https://www.fast.ai/">fastai</a> cut outmuch of the boilerplate and integrate functionality like callbacks and logging. The <a href="https://pytorch-tabular.readthedocs.io/en/latest/">pytorch-tabular</a> libary builds upon the pytorch-lightning library to provide an API for dealing with tabular data.</p>
-<p>In this notebook we work through building a MLP model. In the next notebook we will cover training and testing in a manner that is consistent with our earlier sklearn models.</p>
+<p>PyTorch, the neural-network platform of choice for this project requires users to define their training and validation loops. While this provides excellent flexibility, higher-level API's like <a href="https://www.pytorchlightning.ai/">pytorch-lighting</a> and <a href="https://www.fast.ai/">fastai</a> cut out much of the boilerplate and integrate functionality like callbacks and logging. The <a href="https://pytorch-tabular.readthedocs.io/en/latest/">pytorch-tabular</a> library builds upon the PyTorch-lightning library to provide an API for dealing with tabular data.</p>
+<p>In this notebook, we work through building an MLP model. In the next notebook, we will cover training and testing in a manner that is consistent with our earlier sklearn models.</p>
 
 </div>
 </div>
@@ -241,9 +241,9 @@ window.onload = wrap_img;
 <h2 id="Defining-a-Model">
 <a class="anchor" href="#Defining-a-Model" aria-hidden="true"><span class="octicon octicon-link"></span></a>Defining a Model<a class="anchor-link" href="#Defining-a-Model"> </a>
 </h2>
-<p>Within pytorch-tabular custom networks can be defined by extending the BaseModel class, which in turn extends the pytorch-lightning LightningModule. All hyperparameters are passed in at iniatialisation by the config paramater and is accessable after super() has been called from self.hparams.</p>
-<p>Our first step is to write our MLP. We define our network in the _build_network function, consisting of two matrices (linear layers) seperated by a ReLU activation layer. The number of inputs and outputs are controlled by hyperparameters inferred from the data while the width of the hidden layer is a user controlled parameter.</p>
-<p>We also are requred to define the forward class, which controls how data is passed through our network. The input of this function x, consists of a dictionary with continuous and categorical features broken down into x["continuous"] and x["categorical"]. Outputs of forward must be returned in a dictionary with predictions labelled by "logits". This is messy (and is unclear in their documentation). Hopefully this is something that will be improved in future iterations of this library.</p>
+<p>Within PyTorch-tabular custom networks can be defined by extending the BaseModel class, which in turn extends the PyTorch-Lightning LightningModule. All hyperparameters are passed in at initialisation by the config parameter and is accessible after super() has been called from self.hparams.</p>
+<p>Our first step is to write our MLP. We define our network in the _build_network function, consisting of two matrices (linear layers) separated by a ReLU activation layer. The number of inputs and outputs are controlled by hyperparameters inferred from the data while the width of the hidden layer is a user-controlled parameter.</p>
+<p>We also are required to define the forward class, which controls how data is passed through our network. The input of this function x, consists of a dictionary with continuous and categorical features broken down into x["continuous"] and x["categorical"]. Outputs of forward must be returned in a dictionary with predictions labelled by "logits". This is messy (and is unclear in their documentation). Hopefully, this is something that will be improved in future iterations of this library.</p>
 
 </div>
 </div>
@@ -293,9 +293,9 @@ window.onload = wrap_img;
 <h2 id="Configurations">
 <a class="anchor" href="#Configurations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configurations<a class="anchor-link" href="#Configurations"> </a>
 </h2>
-<p>Data is expected to be a single pd.DataFram including both X and y. This is a departure from the sklearn approach, and in the future we'll work on a fix for this.
+<p>Data is expected to be a single pd.DataFrame including both X and y. This is a departure from the sklearn approach, and in the future, we'll work on a fix for this.
 For the time being, we merge our X and y and define as lists the names of our categorical columns, numerical columns, dates, and targets. We pass this metadata into a DataConfig object, which handles loading and transforming data for us.</p>
-<p>Similarly we also initialise a TrainerConfig class and an OptimizerConfig class, which between them define all the hyperparmeters controlling training. We also define a ModelConfig, which specifies the parameters that determine how our model is built.</p>
+<p>Similarly, we also initialise a TrainerConfig class and an OptimizerConfig class, which between them defines all the hyperparameters controlling training. We also define a ModelConfig, which specifies the parameters that determine how our model is built.</p>
 
 </div>
 </div>
@@ -505,7 +505,7 @@ DATALOADER:0 TEST RESULTS
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Notice that there is a disconnect between the PyTorch-Tabular and scikit-learn apis. In the next part we will work on an implementation that works for the same for both scikit-learn and PyTorch-Tabular models and introduce cross-validation.</p>
+<p>Notice that there is a disconnect between the PyTorch-Tabular and scikit-learn API's. In the next part, we will work on an implementation that works the same for both scikit-learn and PyTorch-Tabular models. We will also introduce cross-validation for our neural networks.</p>
 
 </div>
 </div>
