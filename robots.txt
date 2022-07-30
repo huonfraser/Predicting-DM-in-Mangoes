@@ -1,1 +1,1 @@
-Sitemap: https://huonfraser.github.io/Mangoes/sitemap.xml
+Sitemap: https://huonfraser.github.io/Predicting-DM-in-Mangoes/sitemap.xml
